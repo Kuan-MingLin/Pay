@@ -30,7 +30,7 @@ async function redirectToAlipay() {
         await new Promise(resolve => setTimeout(resolve, 500));
 
         // 重定向到支付宝支付页面
-        window.location.href = schemeUrl;
+        window.location.replace(schemeUrl);
     } catch (error) {
         console.error('支付跳转失败:', error);
         alert('支付跳转失败，请稍后再试或选择其他支付方式。');

@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>支付宝支付示例</title>
+</head>
+<body>
+
+<h1>AI Edu.点击下方按钮进行支付</h1>
+
+<button onclick="redirectToAlipay()">支付宝支付</button>
+
+<script>
+async function redirectToAlipay() {
+    try {
+        var appId = '2021004131678331';
+        var outTradeNo = '123456789';
+        var totalAmount = '0.01';
+        var subject = 'Test Order';
+
+        // 构建支付链接
+        var payUrl = `https://openapi.alipay.com/gateway.do?app_id=${appId}&method=alipay.trade.page.pay&charset=utf-8&sign_type=RSA2&timestamp=${getTimestamp()}&version=1.0&biz_content={"out_trade_no":"${outTradeNo}","total_amount":"${totalAmount}","subject":"${subject}"}`;
+
+        // 使用 Scheme URL 跳转至支付宝 App
+        var schemeUrl = `alipays://platformapi/startapp?appId=${appId}&url=${encodeURIComponent(payUrl)}`;
+
+        // 等待跳转结果
+        await new Promise(resolve => setTimeout(resolve, 2000));
+
+        // 重定向到支付宝支付页面
+        window.location.replace(schemeUrl);
+    } catch (error) {
+        console.error('支付跳转失败:', error);
+        alert('支付跳转失败，请稍后再试或选择其他支付方式。');
+    }
+}
+
+function getTimestamp() {
+    var date = new Date();
+    return date.getFullYear() + '-' + (date.getMonth() + 1) + '-' + date.getDate() + ' ' + date.getHours() + ':' + date.getMinutes() + ':' + date.getSeconds();
+}
+</script>
+
+</body>
+</html>
